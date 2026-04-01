@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE SIGNAL - AI Insights for Investment Professionals</title>
+    <style>
+        :root {
+            /* Light Theme Variables */
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent-color: #0f172a;
+            --accent-light: #e2e8f0;
+            --border-color: #cbd5e1;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --table-header-bg: #f1f5f9;
+            --table-row-alt: #f8fafc;
+            --btn-bg: #0f172a;
+            --btn-text: #ffffff;
+            --link-color: #2563eb;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme Variables */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #ffffff;
+            --accent-light: #334155;
+            --border-color: #334155;
+            --code-bg: #000000;
+            --code-text: #e2e8f0;
+            --table-header-bg: #0f172a;
+            --table-row-alt: #1e293b;
+            --btn-bg: #ffffff;
+            --btn-text: #0f172a;
+            --link-color: #60a5fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 2.5rem; text-align: center; margin-top: 0; }
+        h2 { font-size: 1.75rem; border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.25rem; }
+        
+        p { margin-bottom: 1.5rem; }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+        
+        a:hover {
+            border-bottom-color: var(--link-color);
+        }
+
+        /* Layout Structure */
+        .site-header {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--surface-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+        }
+
+        .issue-meta {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        /* Editor's Note */
+        .editors-note {
+            background-color: var(--accent-light);
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 3rem;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Article Header */
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .article-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .article-meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin: 2.5rem 0;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Lists */
+        ol, ul {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Prompt Block */
+        .prompt-block {
+            background-color: var(--accent-light);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            white-space: pre-wrap;
+        }
+
+        .prompt-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        tr:nth-child(even) td {
+            background-color: var(--table-row-alt);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Quick Bites Section */
+        .quick-bites {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 4px double var(--border-color);
+        }
+
+        .news-item {
+            margin-bottom: 2rem;
+        }
+
+        .news-item h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .article-header h1 {
+                font-size: 2.25rem;
+            }
+            body {
+                font-size: 16px;
+            }
+            .site-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+        
+        /* Message Box */
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .message-box.show {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="logo-container">
+            <div class="logo">THE SIGNAL</div>
+            <div class="tagline">AI Insights for Investment Professionals</div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+            <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span id="themeText">Dark Mode</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <div class="issue-meta">
+            Vol. 1, Issue 12 &nbsp;|&nbsp; April 6, 2026
+        </div>
+
+        <div class="editors-note">
+            <strong>Editor's Note:</strong> Earnings season is here. Thousands of transcripts. The same old ritual: download, skim, highlight, repeat. This issue, we're asking whether that ritual deserves to survive or whether it's already obsolete. The answer surprised us. We hope it does the same for you.
+        </div>
+
+        <article>
+            <header class="article-header">
+                <span class="article-meta">Feature Tutorial</span>
+                <h1>The Analyst Who Stopped Reading Earnings Calls</h1>
+                <div class="article-meta">By The Signal Desk | 6 min read</div>
+            </header>
+
+            <p><strong>How one buy-side analyst used a $30 Claude API script to process an entire earnings season and what investment professionals can learn from it.</strong></p>
+
+            <h2>It Started With a Missed Call</h2>
+            <p>Priya had read fifteen earnings transcripts that day. It was Tuesday, the second week of April, and her coverage list—22 mid-to-large cap industrials and semiconductors—had nearly all reported within a 72-hour window. Her notes were a mess of half-finished sentences. Her coffee was cold. She had a PM meeting in forty minutes.</p>
+            <p>She almost missed the signal buried in the Caterpillar transcript: a two-sentence aside about dealer inventory drawdowns that contradicted the bullish tone of management's prepared remarks. She caught it at 11:58 PM. Her PM did not get the note until morning.</p>
+            <p>That night, she started writing a script.</p>
+
+            <blockquote>
+                "I'm not trying to replace reading. I'm trying to read better — on the things that actually matter."
+            </blockquote>
+
+            <h2>The Anatomy of Earnings Overload</h2>
+            <p>The average S&P 500 earnings call transcript runs 6,000-10,000 words. During peak earnings season—roughly three weeks in April and three in July—a portfolio manager or senior analyst with broad coverage can face 30 to 60 transcripts in a single week. At 20 minutes per call (if you're fast), that's up to 20 hours of reading. Add the 10-K, 10-Q, and press release, and the arithmetic gets cruel.</p>
+
+            <p>The standard workflow looks like this:</p>
+            <ol>
+                <li>Download transcript (often in PDF from Bloomberg or FactSet)</li>
+                <li>Ctrl+F for your watchlist terms: guidance, headcount, inventory, free cash flow</li>
+                <li>Skim Q&A — management's answers to analyst questions often contain more signal than prepared remarks</li>
+                <li>Summarize findings in notes or a CRM</li>
+                <li>Repeat 59 times</li>
+            </ol>
+
+            <p>The inefficiency isn't the reading itself—it's the front-loaded pattern-matching. A skilled analyst knows exactly what she's looking for. The bottleneck is that she has to process thousands of words of boilerplate to get to the 200 words that actually matter.</p>
+            <p>This is precisely the kind of task large language models are built for.</p>
+
+            <h2>Building the Pipeline</h2>
+            <p>Priya's solution took about three hours to build and cost less than $30 to run across an entire earnings season. Here's how it works and how you can replicate it.</p>
+
+            <h3>Step 1 - Ingest the Transcripts</h3>
+            <p>Earnings transcripts are widely available. Bloomberg Terminal, FactSet, and Motley Fool Transcripts are common sources. For this workflow, you can also use the free tier of services like Seeking Alpha or Earnings Whispers. The transcript arrives as plain text or PDF.</p>
+            <p>Priya's script accepts either format. For PDFs, it uses <code>pdfminer.six</code> to extract raw text. For plain text, it reads directly. The first function is just 12 lines:</p>
+
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>import anthropic
+import pdfminer.high_level as pdf
+
+def load_transcript(path: str) -> str:
+    if path.endswith('.pdf'):
+        return pdf.extract_text(path)
+    with open(path, 'r', encoding="utf-8") as f:
+        return f.read()
+
+# Usage
+transcript = load_transcript('NVDA_Q1_2026.pdf')</code></pre>
+            </div>
+
+            <h3>Step 2 - The Analyst Prompt</h3>
+            <p>This is where the real design work lives. The quality of the output depends entirely on how well you've specified the task. Priya iterated through seven versions of her prompt before settling on one that reliably surfaced actionable signal. The key insight: treat the LLM like a junior analyst who's sharp but has never seen your investment thesis.</p>
+
+            <div class="prompt-block"><span class="prompt-title">ANALYST PROMPT</span>You are a senior equity research analyst reviewing an earnings call transcript. Analyse the following transcript and return a structured JSON object with these fields:
+
+tone_score                 : integer 0-100 (0-extremely bearish, 50-neutral, 100-extremely bullish)
+tone_label                 : one of [Bearish, Guarded, Neutral, Cautiously Optimistic, Positive, Bullish]
+guidance_delta             : brief string describing guidance vs. prior quarter (e.g. '+8% rev guidance raised', 'margin guidance lowered ~150bps')
+top_themes                 : list of 3 key themes mentioned (short phrases, not sentences)
+management_hedge_phrases   : list of up to 5 notable hedge/caveat phrases used
+earnings_surprises         : any EPS or revenue beats/misses vs. consensus
+alert                      : one of [Upgrade Watch, Long-term Watch, Stable, Watch Margin, Risk Flag] your recommendation for follow-up priority
+analyst_note               : 2-sentence analyst commentary on the single most important non-consensus signal in this transcript
+
+Return ONLY valid JSON. No markdown, no preamble.</div>
+
+            <p>A few things make this prompt unusually effective for finance workflows:</p>
+            <ul>
+                <li><strong>Structured JSON output</strong> means the results can be directly piped into a spreadsheet or dashboard—no parsing logic, no cleaning.</li>
+                <li>The <strong>tone_score</strong> enforces a quantitative discipline. It forces the model to take a position, not hedge.</li>
+                <li><strong>management_hedge_phrases</strong> is the sleeper field. It surfaces the specific language executives use to walk back optimism—language that experienced analysts train themselves to hear, but that's easy to skim past.</li>
+                <li>The <strong>analyst_note</strong> field captures non-consensus signal—and this is where the most interesting outputs tend to surface.</li>
+            </ul>
+
+            <h3>Step 3 - The API Call</h3>
+            <p>The call itself is straightforward. Priya passes the full transcript in the user message (most modern transcripts fit comfortably within Claude's 200K context window):</p>
+
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>client = anthropic.Anthropic() # API key from environment
+
+def analyse_transcript(transcript: str) -> dict:
+    response = client.messages.create(
+        model='claude-opus-20240229',
+        max_tokens=1024,
+        messages=[
+            {
+                'role': 'user',
+                'content': f'{ANALYST_PROMPT}\n\n---TRANSCRIPT---\n{transcript}'
+            }
+        ]
+    )
+    
+    import json
+    return json.loads(response.content[0].text)</code></pre>
+            </div>
+
+            <p>Run this across a batch of transcripts with a simple loop, and you get a structured dataset—one row per company—that can be sorted, filtered, and prioritized in seconds.</p>
+
+            <h2>What the Output Looks Like</h2>
+            <p>Here's a sample of what Priya's pipeline produced across five names from her coverage list during Q1 2026 earnings. These outputs would normally take 2-3 hours of reading to compile. The pipeline produced them in under four minutes:</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Tone Score</th>
+                            <th>Guidance vs. Prior</th>
+                            <th>Top 3 Themes</th>
+                            <th>Alert</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>NVIDIA (NVDA)</strong></td>
+                            <td>82 / Bullish</td>
+                            <td>+14% rev guidance</td>
+                            <td>AI infra demand, data center, sovereign AI</td>
+                            <td><span style="color: #10b981; font-weight: bold;">Upgrade watch</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>3M (MMM)</strong></td>
+                            <td>51 / Neutral</td>
+                            <td>-3% margin guidance</td>
+                            <td>litigation, Cost cutting, restructuring</td>
+                            <td><span style="color: #f59e0b; font-weight: bold;">Watch margin</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>JPMorgan (JPM)</strong></td>
+                            <td>74 / Cautiously Opt.</td>
+                            <td>In-line NII</td>
+                            <td>Credit quality, rate sensitivity, CRE risk</td>
+                            <td><span style="color: #64748b; font-weight: bold;">Stable</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Moderna (MRNA)</strong></td>
+                            <td>44 / Guarded</td>
+                            <td>-18% rev guidance</td>
+                            <td>Pipeline delays, commercial slowdown, cost base</td>
+                            <td><span style="color: #ef4444; font-weight: bold;">Risk flag</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caterpillar (CAT)</strong></td>
+                            <td>68 / Positive</td>
+                            <td>+6% backlog growth</td>
+                            <td>Infrastructure cycle, mining demand, pricing</td>
+                            <td><span style="color: #3b82f6; font-weight: bold;">Long-term watch</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>The Caterpillar row is the one that would have mattered to Priya most. The <code>analyst_note</code> field surfaced this (slightly paraphrased): <em>"Despite a bullish tone score, management's reference to dealer channel inventory normalization in the Q&A—not flagged in prepared remarks—is a potential leading indicator of volume softness in H2. Watch deferred revenue and dealer order backlog next quarter."</em></p>
+
+            <p>That note took the model 8 seconds to generate. It would have taken a careful reading of the full 7,400-word transcript—including three rounds of Q&A—to surface manually.</p>
+
+            <blockquote>
+                "The pipeline doesn't replace the analyst's judgment. It clears the path so the judgment can actually land somewhere."
+            </blockquote>
+
+            <h2>What It Can't Do</h2>
+            <p>Priya is clear-eyed about the tool's limits—and this is important context for anyone considering something similar.</p>
+            <ul>
+                <li><strong>It has no access to consensus estimates unless you pass them in.</strong> The <code>guidance_delta</code> field compares current quarter to prior quarter—not to the Street. For that, you'd need to wire in a data API (FactSet, Bloomberg, or similar).</li>
+                <li><strong>Tone scores are not calibrated across companies.</strong> An 82 for NVIDIA is not directly comparable to an 82 for a mid-cap utility. Context matters, and the model doesn't have your investment framework unless you give it one.</li>
+                <li><strong>The model can hallucinate specific figures</strong> if the transcript is poorly formatted or truncated. Always spot-check numeric claims before acting on them.</li>
+                <li><strong>It is not a compliance-reviewed tool.</strong> If your firm has restrictions on sending client data to third-party APIs, that applies here. Use dummy / sanitized transcripts for testing if needed.</li>
+            </ul>
+
+            <h2>The Landscape: Build vs. Buy in 2026</h2>
+            <p>The DIY approach isn't the only option. The AI-for-finance tool market has matured significantly, and there are now compelling off-the-shelf alternatives. Here's where things stand:</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool / Approach</th>
+                            <th>Best For</th>
+                            <th>Cost</th>
+                            <th>Technical Lift</th>
+                            <th>Our Take</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Claude API (DIY)</strong></td>
+                            <td>Custom pipelines, full control</td>
+                            <td>Usage-based</td>
+                            <td>Medium</td>
+                            <td>Most flexible — you own the workflow</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AlphaSense</strong></td>
+                            <td>Research at scale, SEC filings</td>
+                            <td>Enterprise $$</td>
+                            <td>Low</td>
+                            <td>Best-in-class for large teams</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rogo</strong></td>
+                            <td>IB & PE workflows, memo drafts</td>
+                            <td>Enterprise $$</td>
+                            <td>Low</td>
+                            <td>Purpose-built; raised $75M Series C</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ChatGPT (manual)</strong></td>
+                            <td>Ad-hoc summaries, quick Q&A</td>
+                            <td>~$20/mo</td>
+                            <td>None</td>
+                            <td>Good starter; limited auditability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bloomberg BPAS</strong></td>
+                            <td>Data-integrated AI via terminal</td>
+                            <td>Terminal cost</td>
+                            <td>Low</td>
+                            <td>Seamless if you're on Bloomberg</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: -2rem; margin-bottom: 2.5rem;"><em>Note: Enterprise pricing varies widely. 'Technical Lift' reflects implementation effort, not ongoing use.</em></p>
+
+            <p>Rogo's $75M Series C (closed Q1 2026, led by Sequoia) is the clearest sign of institutional appetite for purpose-built AI finance tooling. Their pitch—full auditability, IB-grade memo outputs, integration with existing deal workflows—is compelling for larger shops. For a solo analyst or a lean team, a DIY Claude pipeline offers more flexibility at a fraction of the cost.</p>
+
+            <h2>Try This Week - Three Levels of Entry</h2>
+            <ol>
+                <li><strong>Zero code:</strong> Paste any earnings call transcript into Claude.ai and ask it to return a tone score, top 3 themes, and one non-consensus signal. Takes 2 minutes. (Free with Claude.ai Pro)</li>
+                <li><strong>Light code:</strong> Use the prompt and API snippet above to run a single transcript through the pipeline. You'll need an Anthropic API key ($5 in credits will run 50+ transcripts). (Beginner-friendly - Python only)</li>
+                <li><strong>Full build:</strong> Wire the pipeline to a Google Sheet via the Sheets API. Output populates a live dashboard, sortable by tone score and alert flag. A weekend project that pays for itself in hours. (Intermediate Python + Google API)</li>
+            </ol>
+
+            <div class="quick-bites">
+                <h2>Quick Bites</h2>
+                <p><em>Three stories from the past week, sized for your commute.</em></p>
+
+                <div class="news-item">
+                    <h4>Rogo Closes $75M Series C - Sequoia Bets Big on Finance-Native AI</h4>
+                    <p>Rogo, the AI platform built explicitly for investment banking and PE workflows, announced a $75M raise this month. The company's pitch centers on auditability: every figure the system produces is traceable to a source, and every answer is reproducible. For compliance-conscious institutions, this is table stakes. Watch this space—if Rogo can deliver on its promise of generating 'auditable Excel models and investment memos,' it could reshape the junior analyst role within three years.</p>
+                </div>
+
+                <div class="news-item">
+                    <h4>Fortune: 'AI May Finally Be Ready to Manage Your Money'</h4>
+                    <p>The April/May issue of Fortune runs a long feature on AI-powered financial advice, citing Robinhood's Strategies product (250,000 subscribers at ~$250/year) as evidence that the robo-advisor category has been permanently upgraded. The key distinction from earlier iterations: modern LLM-backed tools can account for far more idiosyncratic scenarios than the old 'pick-a-bucket-of-ETFs' approach. For institutional professionals, the retail story matters—it shapes client expectations and creates pressure on the wealth management stack.</p>
+                </div>
+
+                <div class="news-item">
+                    <h4>Finance Leaders Are Cautious About AI - Despite Seeing the Productivity Gains</h4>
+                    <p>New research from AccountsIQ finds that finance professionals broadly recognize AI's potential but remain hesitant to let it operate without human oversight. The most cited concern: auditability and compliance, not accuracy. This is consistent with what we hear from readers. The takeaway for workflow builders: tools that surface their reasoning—that show their work—will win institutional trust faster than black-box solutions, even if the black-box solutions perform better in backtests.</p>
+                </div>
+            </div>
+
+        </article>
+        
+        <footer>
+            <p>That's The Signal for this week.</p>
+            <p>If you build something with Priya's pipeline, we'd genuinely like to hear what you found. Reply to this email. Forward to a colleague. Unsubscribe. Read the archive.</p>
+            <p style="margin-top: 1rem; font-size: 0.75rem;">&copy; 2026 The Signal Newsletter. Not investment advice.</p>
+            <p style="font-size: 0.75rem;">The Signal • April 6, 2026 • For investment professionals • thesignalnewsletter.com</p>
+        </footer>
+    </main>
+
+    <!-- UI Message Box for alerts -->
+    <div id="messageBox" class="message-box">Copied to clipboard!</div>
+
+    <script>
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const htmlBlock = document.documentElement;
+            const currentTheme = htmlBlock.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const themeText = document.getElementById('themeText');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            htmlBlock.setAttribute('data-theme', newTheme);
+            
+            if (newTheme === 'dark') {
+                themeText.innerText = 'Light Mode';
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            } else {
+                themeText.innerText = 'Dark Mode';
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+        }
+
+        // Copy Code Logic
+        function copyCode(button) {
+            const pre = button.nextElementSibling;
+            const code = pre.innerText;
+            
+            // Create a temporary textarea to copy the text (for wider browser support)
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showMessage("Code copied to clipboard!");
+                
+                // Visual feedback on the button
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                setTimeout(() => {
+                    button.innerText = originalText;
+                }, 2000);
+            } catch (err) {
+                showMessage("Failed to copy code.", true);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+        
+        // Custom message box logic (replaces default alert)
+        function showMessage(msg, isError = false) {
+            const msgBox = document.getElementById('messageBox');
+            msgBox.innerText = msg;
+            msgBox.style.backgroundColor = isError ? '#ef4444' : '#10b981';
+            
+            msgBox.classList.add('show');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                msgBox.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Check system preference for dark mode on initial load
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            toggleTheme(); // Automatically switch to dark mode if system prefers it
+        }
+    </script>
+</body>
+</html>
